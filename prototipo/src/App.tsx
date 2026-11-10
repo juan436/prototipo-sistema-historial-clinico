@@ -3,6 +3,7 @@ import Layout, { Aviso, Protegida } from './components/Layout'
 import { Encabezado } from './components/ui'
 import FichaPaciente from './pages/FichaPaciente'
 import Historia from './historia/Historia'
+import Imprimir from './impresion/Imprimir'
 import Login from './pages/Login'
 import NuevoPaciente from './pages/NuevoPaciente'
 import Pacientes from './pages/Pacientes'
@@ -57,6 +58,7 @@ const router = createHashRouter([
           },
         ],
       },
+      { path: '/historias/:historiaId/imprimir/:documento', element: <Imprimir /> },
       { path: '*', element: <Navigate to="/" replace /> },
     ],
   },

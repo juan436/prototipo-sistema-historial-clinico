@@ -1,0 +1,4 @@
+*.pptx
+*.ppt
+node_modules/
+.env

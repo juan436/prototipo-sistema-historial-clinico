@@ -2,6 +2,7 @@ import { createHashRouter, Navigate, Outlet, RouterProvider } from 'react-router
 import Layout, { Aviso, Protegida } from './components/Layout'
 import { Encabezado } from './components/ui'
 import FichaPaciente from './pages/FichaPaciente'
+import Historia from './historia/Historia'
 import Login from './pages/Login'
 import NuevoPaciente from './pages/NuevoPaciente'
 import Pacientes from './pages/Pacientes'
@@ -39,6 +40,7 @@ const router = createHashRouter([
         children: [
           { path: '/pacientes', element: <Pacientes /> },
           { path: '/pacientes/:id', element: <FichaPaciente /> },
+          { path: '/pacientes/:pacienteId/historias/:historiaId', element: <Historia /> },
           {
             element: <Protegida rol="medico" />,
             children: [

@@ -1,7 +1,10 @@
 import { createHashRouter, Navigate, Outlet, RouterProvider } from 'react-router-dom'
 import Layout, { Aviso, Protegida } from './components/Layout'
 import { Encabezado } from './components/ui'
+import FichaPaciente from './pages/FichaPaciente'
 import Login from './pages/Login'
+import NuevoPaciente from './pages/NuevoPaciente'
+import Pacientes from './pages/Pacientes'
 import { useTienda } from './store'
 
 function Raiz() {
@@ -34,10 +37,14 @@ const router = createHashRouter([
       {
         element: <Layout />,
         children: [
-          { path: '/pacientes', element: <EnConstruccion titulo="Pacientes" /> },
+          { path: '/pacientes', element: <Pacientes /> },
+          { path: '/pacientes/:id', element: <FichaPaciente /> },
           {
             element: <Protegida rol="medico" />,
-            children: [{ path: '/perfil', element: <EnConstruccion titulo="Mi perfil y membrete" /> }],
+            children: [
+              { path: '/pacientes/nuevo', element: <NuevoPaciente /> },
+              { path: '/perfil', element: <EnConstruccion titulo="Mi perfil y membrete" /> },
+            ],
           },
           {
             element: <Protegida rol="admin" />,

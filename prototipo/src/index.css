@@ -1,0 +1,113 @@
+@import 'tailwindcss';
+
+@theme {
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  /* Color de acción: verde azulado sobrio. Rojo corazón solo como acento. */
+  --color-accion-50: #effafa;
+  --color-accion-100: #d6f1f1;
+  --color-accion-200: #aee2e3;
+  --color-accion-500: #1a8f96;
+  --color-accion-600: #12747c;
+  --color-accion-700: #0f5d65;
+  --color-accion-800: #0e4a51;
+  --color-corazon: #e11d48;
+}
+
+html {
+  font-size: 15px;
+}
+body {
+  @apply bg-slate-100 text-slate-800 antialiased;
+}
+
+@layer components {
+  .control {
+    @apply block w-full rounded-md border border-slate-300 bg-white px-2.5 py-1.5 text-[15px] text-slate-900 shadow-xs outline-none transition placeholder:text-slate-400 focus:border-accion-500 focus:ring-2 focus:ring-accion-200 disabled:bg-slate-50 disabled:text-slate-700 disabled:shadow-none read-only:bg-slate-50;
+  }
+  .tabla {
+    @apply w-full border-collapse text-left text-[15px];
+  }
+  .tabla th {
+    @apply border-b border-slate-200 bg-slate-50 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-slate-600;
+  }
+  .tabla td {
+    @apply border-b border-slate-100 px-3 py-2 align-middle;
+  }
+}
+
+/* ---------- Papel de ECG para el membrete (cuadrícula fina rosada con puntos) ---------- */
+.papel-ecg {
+  background-color: #fffafa;
+  background-image:
+    radial-gradient(circle, rgba(225, 29, 72, 0.28) 0.22mm, transparent 0.26mm),
+    linear-gradient(rgba(225, 29, 72, 0.2) 0.2mm, transparent 0.2mm),
+    linear-gradient(90deg, rgba(225, 29, 72, 0.2) 0.2mm, transparent 0.2mm),
+    linear-gradient(rgba(225, 29, 72, 0.09) 0.15mm, transparent 0.15mm),
+    linear-gradient(90deg, rgba(225, 29, 72, 0.09) 0.15mm, transparent 0.15mm);
+  background-size: 5mm 5mm, 5mm 5mm, 5mm 5mm, 1mm 1mm, 1mm 1mm;
+  background-position: 2.5mm 2.5mm, 0 0, 0 0, 0 0, 0 0;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+/* ---------- Vistas de impresión: hoja carta ---------- */
+.hoja {
+  width: 8.5in;
+  min-height: 11in;
+  padding: 14mm;
+  margin: 0 auto;
+  background: white;
+  color: #111;
+  font-size: 10.5pt;
+  line-height: 1.4;
+  box-shadow: 0 2px 16px rgba(15, 23, 42, 0.18);
+}
+.hoja-recipe {
+  display: flex;
+  flex-direction: column;
+  height: 11in;
+}
+.seccion-impresa {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+@page {
+  size: letter;
+  margin: 14mm;
+}
+/* «Página x de y» de la historia impresa (se numera al imprimir). */
+@page historia {
+  size: letter;
+  margin: 16mm 14mm 14mm;
+  @top-right {
+    content: 'Historia Médica · Página ' counter(page) ' de ' counter(pages);
+    font-family: system-ui, sans-serif;
+    font-size: 8.5pt;
+    color: #555;
+  }
+}
+
+@media print {
+  html,
+  body {
+    background: white !important;
+  }
+  .no-imprimir {
+    display: none !important;
+  }
+  .hoja {
+    width: auto;
+    min-height: 0;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+  }
+  .hoja-historia {
+    page: historia;
+  }
+  .hoja-recipe {
+    /* alto útil de la hoja carta con márgenes de 14 mm, con un pequeño margen de seguridad */
+    height: calc(11in - 28mm - 3mm);
+  }
+}

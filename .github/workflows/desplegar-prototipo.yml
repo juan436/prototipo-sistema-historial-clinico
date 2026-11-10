@@ -1,0 +1,53 @@
+# Compila el prototipo visual (carpeta prototipo/) y lo publica en GitHub Pages.
+# Requisito único: en Settings > Pages, elegir «GitHub Actions» como Source.
+name: Desplegar prototipo
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'prototipo/**'
+      - '.github/workflows/desplegar-prototipo.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Un solo despliegue a la vez; no se cancela uno que ya está publicando.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  compilar:
+    name: Compilar
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: prototipo
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: prototipo/package-lock.json
+      - run: npm ci
+      - run: npm run build
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: prototipo/dist
+
+  desplegar:
+    name: Publicar en GitHub Pages
+    needs: compilar
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.despliegue.outputs.page_url }}
+    steps:
+      - id: despliegue
+        uses: actions/deploy-pages@v4

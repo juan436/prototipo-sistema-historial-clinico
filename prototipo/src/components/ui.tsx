@@ -229,7 +229,7 @@ export function Insignia({ tono = 'gris', children }: { tono?: 'gris' | 'verde' 
     azul: 'bg-accion-50 text-accion-700',
     rojo: 'bg-rose-50 text-rose-700',
   }
-  return <span className={cx('inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium', tonos[tono])}>{children}</span>
+  return <span className={cx('inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium whitespace-nowrap', tonos[tono])}>{children}</span>
 }
 
 export function Modal({
